@@ -1,6 +1,6 @@
 const storage = require("./storage"),
   SQLite = require("./sqlite"),
-  update = require("./update"),
+  Update = require("./update"),
   { UserException } = require("./object");
 class ViewItem {
   constructor({ id, title, icon, fileName, func }) {
@@ -129,12 +129,12 @@ class Config {
 }
 
 class Kernel {
-  constructor({ debugMode, keyboardMode }) {
+  constructor() {
     this.appInfo = $addin.current;
-    this.DEBUG_MODE = debugMode === true;
-    this.KEYBOARD_MODE = keyboardMode;
+    this.DEBUG_MODE = false;
+    this.KEYBOARD_MODE = false;
     this.config = new Config();
-    this.update = new update({
+    this.updater = new Update({
       appVersion: this.appInfo.version,
       updateConfigUrl: undefined
     });
@@ -142,5 +142,14 @@ class Kernel {
       appKernel: this
     });
   }
+  setDebug(debug) {
+    this.DEBUG_MODE = debug === true;
+  }
+  setKeyboardMode(keyboard) {
+    this.KEYBOARD_MODE = keyboard === true;
+  }
 }
-module.exports = Kernel;
+
+module.exports = {
+  Kernel
+};
